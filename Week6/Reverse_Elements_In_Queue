@@ -39,6 +39,7 @@ def print_queue(q, fptr):
 '''
 
 def reverseFirstKElements(q, k):
+   
     # print(list(q.queue))
     # print(f'this is k: {k}')
     
