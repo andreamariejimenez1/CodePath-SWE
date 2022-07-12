@@ -1,0 +1,92 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+import queue 
+
+def print_queue(q, fptr):
+    while (not q.empty()):
+        fptr.write(str(q.queue[0]))
+        fptr.write(' ')
+        q.get()
+
+
+#
+# Complete the 'reverseFirstKElements' function below.
+#
+# The function accepts following parameters:
+#  1. Queue queue
+#  2. INTEGER k
+#
+
+'''
+1. Handle edge cases:
+   a. If 'k' is greater than the number of elements in the queue input
+      > Return the original queue 
+   b. If 'k' is a negative number (less than 0)
+      > Return the original queue 
+2. Create an empty stack
+   a. All numbers (based on 'k') dequeued from q will be put in this stack
+3. For loop that takes in 'k':
+   a. Get the number from q and append it to the stack
+4. While the stack is not empty, pop (will get the last element in the stack which will be the reversed version) and put that number at the end of the orignal queue
+5. For the rest of the queue (size of q - k), dequeue the number and put the number to the same q itself
+6. Return q
+
+'''
+
+def reverseFirstKElements(q, k):
+    # print(list(q.queue))
+    # print(f'this is k: {k}')
+    
+    if k > q.qsize():
+        return q
+    
+    # the description did not say how to handle a negative k input
+    if k < 0:
+        return q
+    
+    # Write your code here
+    stack = []
+
+    for i in range(k):
+        number = q.get()
+        stack.append(number)
+    # print(f'this is the stack {stack}')
+    # print("Queue with out numbers")
+    # print(list(q.queue))
+    
+    while stack != []:
+        number = stack.pop()
+        q.put(number)
+    # print("Queue with numbers in the back:")
+    # print(list(q.queue))
+    
+    for i in range(q.qsize()-k):
+        # print(q.qsize()-k)
+        dequeueNum = q.get()
+        q.put(dequeueNum)
+        
+    return q
+    print(list(q.queue))
+        
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    queue_count = int(input().strip())
+
+    q = queue.Queue()
+
+    for _ in range(queue_count):
+        queue_item = int(input().strip())
+        q.put(queue_item)
+
+    k = int(input().strip())
+
+    reverseFirstKElements(q, k)
+    
+    print_queue(q, fptr)
+    fptr.write('\n')
